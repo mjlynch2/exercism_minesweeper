@@ -63,7 +63,7 @@ const isValid = (input) => {
     if (regex.test(e)) {
       // board cannot contain invalid characters
       isValid = false;
-    } else if (input.length < 2 || e.length < 1 || e.length != width) {
+    } else if (input.length < 1 || (e.length < 2 && input.length == 1) || e.length != width) {
       // board must be rectangular
       isValid = false;
     }
@@ -71,4 +71,3 @@ const isValid = (input) => {
 
   return isValid;
 };
-
