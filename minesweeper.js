@@ -1,4 +1,4 @@
-const annotate = (input) => {
+export const annotate = (input) => {
   if (!isValid(input)) {
     return `[${input}] is invalid`;
   }
@@ -8,6 +8,7 @@ const annotate = (input) => {
 
   for (let y = 0; y < height; y++) {
     let row = [];
+    let rowStr = "";
     for (let x = 0; x < width; x++) {
       let sum = 0;
       if (hasMine([...input[y]][x])) {
@@ -36,9 +37,9 @@ const annotate = (input) => {
       } else {
         row.push(" ");
       }
-      rowString = row.join("");
+      rowStr = row.join("");
     }
-    result.push(rowString);
+    result.push(rowStr);
   }
   return result;
 };
@@ -47,22 +48,23 @@ const hasMine = (val) => {
   return val === "*";
 };
 
-const sumAdjacent = (x, y) => {
-  return val;
-};
 
 const isValid = (input) => {
-  // board cannot contain invalid characters
   const regex = /[^\* ]/g;
-  // board must be rectangular
-  const width = input[0].length;
+  
   let isValid = true;
+  
+  if(input.length == 0) {
+  // board can't be empty
+    return false;
+  }
+  let width = input[0].length;
   [...input].forEach((e) => {
     if (regex.test(e)) {
-      console.log(`Error: [${input}] contains invalid character(s)`);
+      // board cannot contain invalid characters
       isValid = false;
     } else if (input.length < 2 || e.length < 1 || e.length != width) {
-      console.log(`Error: [${input}] is not a rectangle`);
+      // board must be rectangular
       isValid = false;
     }
   });
@@ -70,18 +72,3 @@ const isValid = (input) => {
   return isValid;
 };
 
-const input = [
-  ["*"],
-  [" "],
-  [""],
-  ["  ", " 1"],
-  [" ", ""],
-  [" ", " * ", " "],
-  [" ", " ", " "],
-];
-
-const input3 = ["   ", "   ", "   "];
-
-const in2 = [" * ", " * ", "*  "];
-
-console.log(annotate(input3));
