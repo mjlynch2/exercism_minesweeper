@@ -7,14 +7,11 @@ const annotate = (input) => {
   let result = [];
 
   for (let y = 0; y < height; y++) {
-    let row = Array(width);
+    let row = [];
     for (let x = 0; x < width; x++) {
       let sum = 0;
       if (hasMine([...input[y]][x])) {
-        console.log(`Value at [${x}, ${y}]: ${[...input[y]][x]}`);
-        row[x] = "*";
-        console.log(row);
-        continue;
+        sum = -1;
       } else {
         for (let i = -1; i < 2; i++) {
           for (let j = -1; j < 2; j++) {
@@ -25,9 +22,6 @@ const annotate = (input) => {
             } else if (0 > yCoord || yCoord > height - 1) {
               continue;
             } else {
-              console.log(
-                `Current cell is [${x}, ${y}]. Checking [${xCoord}, ${yCoord}] for mine...`
-              );
               if (hasMine([...input[yCoord]][xCoord])) {
                 sum++;
               }
@@ -35,23 +29,22 @@ const annotate = (input) => {
           }
         }
       }
-      console.log(`Value at [${x}, ${y}]: ${sum}`);
       if (sum > 0) {
-        row[x] = sum;
+        row.push(sum);
+      } else if ((sum == -1)) {
+        row.push("*");
       } else {
-        row[x] = " ";
+        row.push(" ");
       }
-      console.log(row);
       rowString = row.join("");
-      result.push(rowString);
     }
+    result.push(rowString);
   }
-  console.log(result);
   return result;
 };
 
 const hasMine = (val) => {
-  return val == "*";
+  return val === "*";
 };
 
 const sumAdjacent = (x, y) => {
@@ -87,6 +80,8 @@ const input = [
   [" ", " ", " "],
 ];
 
-const in2 = [" *", " *", "* "];
+const input3 = ["   ", "   ", "   "];
 
-annotate(in2);
+const in2 = [" * ", " * ", "*  "];
+
+console.log(annotate(input3));
