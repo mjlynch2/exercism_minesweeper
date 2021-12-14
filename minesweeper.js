@@ -1,44 +1,62 @@
 const annotate = (input) => {
-  let width;
-  let height;
-  if (isValid(input)) {
-    width = input[0].length;
-    height = input.length;
+  if (!isValid(input)) {
+    return `[${input}] is invalid`;
+  }
+  let width = input[0].length;
+  let height = input.length;
+  let result = [];
+
+  for (let y = 0; y < height; y++) {
+    let row = Array(width);
     for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        let sum = 0;
+      let sum = 0;
+      if (hasMine([...input[y]][x])) {
+        console.log(`Value at [${x}, ${y}]: ${[...input[y]][x]}`);
+        row[x] = "*";
+        console.log(row);
+        continue;
+      } else {
         for (let i = -1; i < 2; i++) {
           for (let j = -1; j < 2; j++) {
             let xCoord = x + i;
             let yCoord = y + j;
-            if (0 > xCoord || xCoord > width) {
-              return;
-            } else if (0 > yCoord || yCoord > height) {
-              return;
+            if (0 > xCoord || xCoord > width - 1) {
+              continue;
+            } else if (0 > yCoord || yCoord > height - 1) {
+              continue;
             } else {
               console.log(
                 `Current cell is [${x}, ${y}]. Checking [${xCoord}, ${yCoord}] for mine...`
               );
-              if ([...input[yCoord]][xCoord] == "*") {
-                //console.log([...input[yCoord]][xCoord]);
+              if (hasMine([...input[yCoord]][xCoord])) {
                 sum++;
               }
             }
           }
         }
-        //console.log(sum);
-        if ([...input[y]][x] > 0) {
-          [...input[y]][x] = sum;
-        }
       }
+      console.log(`Value at [${x}, ${y}]: ${sum}`);
+      if (sum > 0) {
+        row[x] = sum;
+      } else {
+        row[x] = " ";
+      }
+      console.log(row);
+      rowString = row.join("");
+      result.push(rowString);
     }
-    console.log(input);
   }
+  console.log(result);
+  return result;
 };
 
 const hasMine = (val) => {
-  return val == '*';
-}
+  return val == "*";
+};
+
+const sumAdjacent = (x, y) => {
+  return val;
+};
 
 const isValid = (input) => {
   // board cannot contain invalid characters
@@ -71,11 +89,4 @@ const input = [
 
 const in2 = [" *", " *", "* "];
 
-//console.log(`[${in2[0]}], [${[...in2[2]][1]}]`);
 annotate(in2);
-
-/*
-.*
-.*
-*.
-*/
